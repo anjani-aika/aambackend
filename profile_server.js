@@ -22,7 +22,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'aam_app',
+    database: 'aam',
   });
 
   //get all datas
@@ -37,7 +37,7 @@ const pool = mysql.createPool({
 //        console.log(`connected as id ${connection.threadId}`)
 
 //        //query(sqlString,callback)
-//        connection.query('SELECT * from aam_app___sheet1 WHERE id=?' ,[req.params.id],(err,rows)=>{
+//        connection.query('SELECT * from aam___sheet1 WHERE id=?' ,[req.params.id],(err,rows)=>{
 
 //         if(!err){
 //             res.send(rows)

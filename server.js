@@ -25,7 +25,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'aam_app',
+  database: 'aam',
 });
 
 // Get all beers
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
       throw err;
     }
     console.log('connected');
-    connection.query('SELECT * FROM loginn', (err, rows) => {
+    connection.query('SELECT * FROM hc', (err, rows) => {
       connection.release(); // return the connection to pool
 
       if (!err) {
@@ -54,35 +54,41 @@ app.post('/loginn', function (request, response, next) {
   var email = request.body.email;
 
   var dob = request.body.dob;
+  
   // var loginName = 'loginn data';
   if (email && dob) {
     let query = `
-    SELECT * FROM loginn
+    SELECT * FROM hc
     WHERE email = "${email}"
     `;
 
     database.query(query, function (error, data) {
-      console.log(data);
+      //console.log(data);
       if (data) {
         for (var count = 0; count < data.length; count++) {
-          console.log(data[count].dob);
-          if (data[count].dob == dob) {
+          let date=data[count].dob.toISOString().
+          replace(/T/, ' ').      // replace T with a space
+          replace(/\..+/, '');
+          date=date.split(' ')[0];
+          if (date == dob) {
             // request.session.user_id = data[count].user_id;
-
+            
             // response.redirect("/");
-            response.send(data);
+          return  response.send(data);
           } else {
-            response.send('Incorrect Password');
+           // console.log('hi');
+           // console.log(date);
+          return  response.send('Incorrect Password');
           }
         }
       } else {
-        response.send('Incorrect Email Address');
+        return response.send('Incorrect Email Address');
       }
-      response.end();
+     // response.end();
     });
   } else {
-    response.send('Please Enter Email Address and Password Details');
-    response.end();
+    return  response.send('Please Enter Email Address and Password Details');
+   // response.end();
   }
 });
 
@@ -132,7 +138,7 @@ app.post('/send-noti', (req, res) => {
 
 app.post('/profile', (req, res) => {
   var email = req.body.email;
-  //console.log(email);
+  console.log(email);
   pool.getConnection((err, connection) => {
     if (err) throw err;
     // console.log(`connected as id ${connection.threadId}`)
@@ -140,7 +146,7 @@ app.post('/profile', (req, res) => {
     //query(sqlString,callback)
     //    where = 'email = ?';
     //    values = email ;
-    var sql = 'SELECT * FROM loginn WHERE email=?';
+    var sql = 'SELECT * FROM hc WHERE email=?';
     connection.query(sql, [email], (err, rows) => {
       if (!err) {
         //console.log('roes', rows);

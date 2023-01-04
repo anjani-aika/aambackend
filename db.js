@@ -17,7 +17,7 @@ const mysql = require('mysql');
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  database: 'aam_app',
+  database: 'aam',
   user: 'root',
   password: '',
 });
