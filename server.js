@@ -22,9 +22,9 @@ admin.initializeApp({
 // MySQL
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: 'localhost',
+  host: '172.17.0.2',
   user: 'root',
-  password: '',
+  password: 'Sac@123',
   database: 'aam',
 });
 
@@ -54,7 +54,7 @@ app.post('/loginn', function (request, response, next) {
   var email = request.body.email;
 
   var dob = request.body.dob;
-  
+  console.log("inside login");
   // var loginName = 'loginn data';
   if (email && dob) {
     let query = `
@@ -63,7 +63,7 @@ app.post('/loginn', function (request, response, next) {
     `;
 
     database.query(query, function (error, data) {
-      //console.log(data);
+      console.log('data',data);
       if (data) {
         for (var count = 0; count < data.length; count++) {
           let date=data[count].dob.toISOString().
